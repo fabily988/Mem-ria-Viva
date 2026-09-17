@@ -29,5 +29,40 @@
         </div>
     </header>
 
+    <div class="main-container">
+        <p style="color: #555; margin-bottom: 5px; font-weight: 500;">BEM-VINDO AO MEMÓRIA VIVA,</p>
+        <h1 style="font-size: 2rem; margin-bottom: 25px;">CADASTRO:</h1>
+
+        <form id="form-cadastro">
+            <input type="text" id="cad-nome" placeholder="Nome" required>
+            <input type="email" id="cad-email" placeholder="E-mail" required>
+            <input type="password" id="cad-senha" placeholder="Senha" required>
+            
+            <div style="color: #444; font-size: 0.95rem; margin-top: 5px; text-align: left; width: 100%;">
+                <label style="font-weight: bold;">Você é:</label>
+
+                <label class="opcao-grupo">
+                    <input type="radio" id="tipo-paciente" name="tipo-usuario" value="paciente" checked>
+                    <span>Paciente</span>
+                </label>
+
+                <label class="opcao-grupo">
+                    <input type="radio" id="tipo-cuidador" name="tipo-usuario" value="cuidador">
+                    <span>Cuidador</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 15px;">Cadastrar</button>
+        </form>
+
+        <div class="auth-links">
+            <a href="index.html">Já tem uma conta? Faça login aqui</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
 </body>
 </html>
