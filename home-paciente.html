@@ -84,5 +84,36 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
+    <script>
+        localStorage.setItem('memoria_viva_perfil', 'paciente');
+
+        const usuarioLogado = localStorage.getItem('memoria_viva_usuario_logado');
+        let usuariosCadastrados = JSON.parse(localStorage.getItem('memoria_viva_usuarios')) || [];
+        
+        let codigoPaciente = "123456";
+        let usuarioAtual = usuariosCadastrados.find(u => u.usuario === usuarioLogado || u.nome === usuarioLogado);
+
+        if (usuarioAtual) {
+            if (!usuarioAtual.codigoVinculo) {
+                usuarioAtual.codigoVinculo = Math.floor(100000 + Math.random() * 900000).toString();
+                localStorage.setItem('memoria_viva_usuarios', JSON.stringify(usuariosCadastrados));
+            }
+            codigoPaciente = usuarioAtual.codigoVinculo;
+        } else {
+            // Caso de sessão direta sem login formal, gera e salva uma vez para fixar na sessão
+            codigoPaciente = localStorage.getItem('memoria_viva_codigo_vinculo_estatico');
+            if (!codigoPaciente) {
+                codigoPaciente = Math.floor(100000 + Math.random() * 900000).toString();
+                localStorage.setItem('memoria_viva_codigo_vinculo_estatico', codigoPaciente);
+            }
+        }
+
+        localStorage.setItem('memoria_viva_codigo_vinculo', codigoPaciente);
+
+        const spanCodigo = document.getElementById('exibir-codigo-tela');
+        if (spanCodigo) {
+            spanCodigo.innerText = codigoPaciente;
+        }
+    </script>
 </body>
 </html>
