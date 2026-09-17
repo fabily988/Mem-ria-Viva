@@ -102,5 +102,32 @@
         <a href="home-paciente.html" style="color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Voltar</a>
     </header>
 
+    <div class="ajuda-container">
+        <h1 style="font-size: 1.6rem; color: var(--text-color); margin-bottom: 0;">Precisa de Ajuda?</h1>
+        
+        <div class="aviso-card">
+            Fique calmo(a). Se precisar de alguma coisa, use os botões abaixo para avisar o responsável imediatamente.
+        </div>
+
+        <div class="contato-info">
+            <span style="font-size: 0.9rem; color: #666;">Cuidador(a) Responsável:</span>
+            <span style="font-size: 1.2rem; font-weight: bold; color: var(--text-color);" id="nome-cuidador">Aguardando vínculo com cuidador</span>
+        </div>
+
+        <a href="tel:5511999999999" class="btn-ligar" id="link-telefone" style="display: none;">
+            📞 Ligar para o Cuidador
+        </a>
+
+        <a href="#" class="btn-emergencia" onclick="enviarAlertaUrgencia()">
+            🚨 Chamar Urgência / Ajuda
+        </a>
+
+        <a href="home-paciente.html" class="btn-voltar">Voltar para o Início</a>
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
 </body>
 </html>
