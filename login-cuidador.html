@@ -35,5 +35,16 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
+    <script>
+        document.getElementById('form-login-cuidador').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const entradaDigitada = document.getElementById('login-c-nome').value.trim().toLowerCase();
+            const senhaDigitada = document.getElementById('login-c-senha').value;
+
+            // Busca os usuários salvos no navegador (do cadastro)
+            const usuariosCadastrados = JSON.parse(localStorage.getItem('memoria_viva_usuarios')) || [];
+        });
+    </script>
 </body>
 </html>
