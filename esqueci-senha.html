@@ -81,5 +81,34 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
+    <script>
+        document.getElementById('form-recuperar').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const usuarioDigitado = document.getElementById('rec-usuario').value.trim().toLowerCase();
+            const novaSenha = document.getElementById('rec-nova-senha').value.trim();
+
+            let usuariosCadastrados = JSON.parse(localStorage.getItem('memoria_viva_usuarios')) || [];
+            let usuarioEncontrado = false;
+
+            usuariosCadastrados.forEach(user => {
+                const nomeMatch = user.nome && user.nome.toLowerCase() === usuarioDigitado;
+                const emailMatch = user.email && user.email.toLowerCase() === usuarioDigitado;
+                const userMatch = user.usuario && user.usuario.toLowerCase() === usuarioDigitado;
+
+                if (nomeMatch || emailMatch || userMatch) {
+                    usuarioEncontrado = true;
+                    user.senha = novaSenha;
+                }
+            });
+
+            if (usuarioEncontrado) {
+                localStorage.setItem('memoria_viva_usuarios', JSON.stringify(usuariosCadastrados));
+                alert("Senha redefinida com sucesso! Faça login com sua nova senha.");
+                window.location.href = "index.html";
+            } else {
+                alert("Erro: Usuário ou e-mail não encontrado no sistema. Verifique o dado digitado ou faça o cadastro.");
+            }
+        });
+    </script>
 </body>
 </html>
