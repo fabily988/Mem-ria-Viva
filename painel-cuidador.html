@@ -5,6 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memória Viva - Painel do Cuidador</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .painel-container {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-card {
+            background-color: #FFF;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-card input, .form-card select {
+            background-color: #4a919e !important;
+            color: #ffffff !important;
+            border: 1px solid #3b7580;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .form-card input::placeholder {
+            color: #e0f2f1;
+            opacity: 0.8;
+        }
+        .form-card select option {
+            background-color: #ffffff;
+            color: #333333;
+        }
+        .btn-lixeira {
+            background: none;
+            border: none;
+            color: #d9534f;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 2px 5px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .btn-lixeira:hover {
+            transform: scale(1.15);
+        }
+    </style>
 </head>
 <body>
 
