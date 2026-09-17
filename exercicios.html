@@ -113,5 +113,35 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
+    <script>
+        function verificarResposta(num, tipo) {
+            const input = document.getElementById(`resp-${num}`);
+            const feedback = document.getElementById(`feedback-${num}`);
+            const valor = input.value.trim();
+
+            if (!valor) {
+                alert("Por favor, digite uma resposta antes de enviar.");
+                return;
+            }
+
+            feedback.style.display = "block";
+            feedback.style.color = "#2e7d32";
+            feedback.innerHTML = `✨ Muito bem! Que lembrança maravilhosa (${valor}). Parabéns por exercitar a mente hoje!`;
+        }
+    </script>
+</body>
+</html>
+            <input type="text" id="resp-3" placeholder="Ex: Verão, inverno...">
+            <button class="btn-verificar" onclick="verificarResposta(3, 'estacao')">Responder</button>
+            <span id="feedback-3" class="resposta-feedback"></span>
+        </div>
+
+        <a href="home-paciente.html" class="btn-voltar">Voltar para o Início</a>
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
 </body>
 </html>
