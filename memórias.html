@@ -181,45 +181,90 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
-</body>
-</html>
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .modal-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .modal-card input, .modal-card textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-    </style>
-</head>
-<body>
+    <script>
+        const memoriasPadrao = [
+            {
+                ano: "1975",
+                titulo: "O Casamento",
+                descricao: "Um dia inesquecível celebrado com toda a família e amigos na igrejinha do bairro."
+            },
+            {
+                ano: "1982",
+                titulo: "A Viagem para a Praia",
+                descricao: "A primeira viagem de férias com as crianças para o litoral. Muita alegria na areia."
+            },
+            {
+                ano: "1995",
+                titulo: "A Casa Nova",
+                descricao: "A conquista da casa própria com um quintal cheio de árvores e flores."
+            }
+        ];
 
-    <header>
-        <div class="logo-container" style="flex-direction: row; gap: 10px; margin: 0;">
-            <img src="img/logo.jpg" alt="Logo" style="width: 40px; margin: 0;" onerror="this.style.display='none'">
-            <span style="font-size: 1.2rem;">Memória Viva</span>
-        </div>
-        <a href="home-paciente.html" style="color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Voltar</a>
-    </header>
+        function carregarMemorias() {
+            let memorias = JSON.parse(localStorage.getItem('memoria_viva_memorias')) || memoriasPadrao;
+            
+            // Garante inicialização no localStorage se for a primeira vez
+            if (!localStorage.getItem('memoria_viva_memorias')) {
+                localStorage.setItem('memoria_viva_memorias', JSON.stringify(memoriasPadrao));
+            }
 
+            const container = document.getElementById('lista-memorias');
+            container.innerHTML = '';
+
+            memorias.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'memoria-card';
+                card.innerHTML = `
+                    <div class="memoria-cabecalho">
+                        <span class="memoria-ano">🖼️ ${item.ano}</span>
+                        <button class="btn-lixeira" onclick="excluirMemoria(${index})" title="Excluir memória">🗑️</button>
+                    </div>
+                    <span class="memoria-titulo">${item.titulo}</span>
+                    <p class="memoria-texto">${item.descricao}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function abrirModal() {
+            document.getElementById('modal-memoria').style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-memoria').style.display = 'none';
+            document.getElementById('novo-ano').value = '';
+            document.getElementById('novo-titulo').value = '';
+            document.getElementById('nova-descricao').value = '';
+        }
+
+        function salvarMemoria() {
+            const ano = document.getElementById('novo-ano').value.trim();
+            const titulo = document.getElementById('novo-titulo').value.trim();
+            const descricao = document.getElementById('nova-descricao').value.trim();
+
+            if (!ano || !titulo || !descricao) {
+                alert("Por favor, preencha todos os campos da memória.");
+                return;
+            }
+
+            let memorias = JSON.parse(localStorage.getItem('memoria_viva_memorias')) || [];
+            memorias.unshift({ ano, titulo, descricao });
+            localStorage.setItem('memoria_viva_memorias', JSON.stringify(memorias));
+
+            fecharModal();
+            carregarMemorias();
+        }
+
+        function excluirMemoria(index) {
+            if (confirm("Deseja realmente excluir esta memória?")) {
+                let memorias = JSON.parse(localStorage.getItem('memoria_viva_memorias')) || [];
+                memorias.splice(index, 1);
+                localStorage.setItem('memoria_viva_memorias', JSON.stringify(memorias));
+                carregarMemorias();
+            }
+        }
+
+        window.onload = carregarMemorias;
+    </script>
 </body>
 </html>
