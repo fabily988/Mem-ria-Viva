@@ -96,5 +96,53 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
+    <script>
+        function carregarRotinas() {
+            const rotinasPadrao = [
+                { horario: "09:00 - Manhã", titulo: "Café da manhã com a família", tipo: "compromisso" },
+                { horario: "12:00 - Almoço", titulo: "Tomar remédio de pressão (1 comprimido azul)", tipo: "medicamento" },
+                { horario: "15:00 - Tarde", titulo: "Caminhada leve no jardim", tipo: "compromisso" }
+            ];
+
+            let rotinasSalvas = JSON.parse(localStorage.getItem('memoria_viva_rotinas')) || rotinasPadrao;
+            const containerLista = document.getElementById('lista-rotinas');
+            containerLista.innerHTML = ''; 
+
+            if (rotinasSalvas.length === 0) {
+                containerLista.innerHTML = '<p style="text-align: center; color: #666;">Nenhuma rotina cadastrada no momento.</p>';
+                return;
+            }
+
+            rotinasSalvas.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = item.tipo === 'medicamento' ? 'card-item medicamento' : 'card-item';
+                
+                const icone = item.tipo === 'medicamento' ? '💊' : '⏰';
+
+                card.innerHTML = `
+                    <div class="card-info">
+                        <span class="card-horario">${icone} ${item.horario}</span>
+                        <span class="card-titulo">${item.titulo}</span>
+                    </div>
+                    <button class="btn-excluir" onclick="deletarRotina(${index})">🗑️ Excluir</button>
+                `;
+                containerLista.appendChild(card);
+            });
+        }
+
+        // Função para deletar um item específico pelo seu índice na lista
+        function deletarRotina(index) {
+            let rotinasSalvas = JSON.parse(localStorage.getItem('memoria_viva_rotinas')) || [];
+            
+            if (confirm("Deseja realmente remover este item da rotina?")) {
+                rotinasSalvas.splice(index, 1); // Remove o item da posição 'index'
+                localStorage.setItem('memoria_viva_rotinas', JSON.stringify(rotinasSalvas)); // Salva a lista atualizada
+                carregarRotinas(); // Recarrega a tela para atualizar os cards
+            }
+        }
+
+        // Executa ao carregar a página
+        window.onload = carregarRotinas;
+    </script>
 </body>
 </html>
