@@ -136,6 +136,214 @@
                 document.getElementById('nome-paciente-ativo').innerText = pacienteAtivo;
 
                 carregarAlertasCuidador();
+                carregarRotinasCadastradas();
+                setInterval(carregarAlertasCuidador, 3000);
+            } else {
+                document.getElementById('secao-vinculacao').style.display = 'flex';
+                document.getElementById('secao-painel-real').style.display = 'none';
+            }
+        }
+
+        function verificarCodigoVinculo() {
+            const digitado = document.getElementById('input-codigo-vinculo').value.trim();
+            let usuariosCadastrados = JSON.parse(localStorage.getItem('memoria_viva_usuarios')) || [];
+
+            let pacienteEncontrado = usuariosCadastrados.find(u => u.codigoVinculo === digitado);
+
+            if (pacienteEncontrado) {
+                const nomePaciente = pacienteEncontrado.nome || pacienteEncontrado.usuario;
+                const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+
+                localStorage.setItem(`memoria_viva_vinculado_${cuidadorLogado}`, 'true');
+                localStorage.setItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`, nomePaciente);
+
+                localStorage.setItem(`memoria_viva_cuidador_vinculado_${nomePaciente}`, 'true');
+                localStorage.setItem(`memoria_viva_nome_cuidador_ativo_${nomePaciente}`, cuidadorLogado);
+
+                alert(`Vínculo realizado com sucesso com o paciente ${nomePaciente}!`);
+                checarVinculo();
+            } else {
+                alert("Código incorreto ou paciente não encontrado! Verifique os 6 dígitos na conta do paciente.");
+            }
+        }
+
+        function desvincularPaciente() {
+            if (confirm("Deseja realmente se desvincular deste paciente?")) {
+                const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+                const pacienteAtivo = localStorage.getItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`);
+
+                localStorage.removeItem(`memoria_viva_vinculado_${cuidadorLogado}`);
+                localStorage.removeItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`);
+                
+                if (pacienteAtivo) {
+                    localStorage.removeItem(`memoria_viva_cuidador_vinculado_${pacienteAtivo}`);
+                    localStorage.removeItem(`memoria_viva_nome_cuidador_ativo_${pacienteAtivo}`);
+                }
+                
+                checarVinculo();
+            }
+        }
+
+        function carregarAlertasCuidador() {
+            const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+            const pacienteAtivo = localStorage.getItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`);
+            const todosAlertas = JSON.parse(localStorage.getItem('memoria_viva_alertas')) || [];
+
+            const containerAlertas = document.getElementById('lista-alertas');
+            let encontrouAlerta = false;
+
+            containerAlertas.innerHTML = '';
+            
+            todosAlertas.forEach((alerta, indexOriginal) => {
+                if (alerta.paciente === pacienteAtivo) {
+                    encontrouAlerta = true;
+                    const item = document.createElement('div');
+                    item.style.backgroundColor = '#fdf2f2';
+                    item.style.padding = '8px 10px';
+                    item.style.borderRadius = '6px';
+                    item.style.fontSize = '0.85rem';
+                    item.style.border = '1px solid #f5c6cb';
+                    item.style.display = 'flex';
+                    item.style.justifyContent = 'space-between';
+                    item.style.alignItems = 'center';
+                    item.style.gap = '8px';
+
+                    item.innerHTML = `
+                        <div>
+                            <strong style="color: #d9534f;">[${alerta.data}]</strong> ${alerta.mensagem}
+                        </div>
+                        <button class="btn-lixeira" onclick="removerAlerta(${indexOriginal})" title="Excluir este alerta">
+                            🗑️
+                        </button>
+                    `;
+                    containerAlertas.appendChild(item);
+                }
+            });
+
+            if (!encontrouAlerta) {
+                containerAlertas.innerHTML = '<p style="font-size: 0.9rem; color: #666; margin: 0;">Nenhum alerta recente deste paciente.</p>';
+            }
+        }
+
+        function removerAlerta(index) {
+            let todosAlertas = JSON.parse(localStorage.getItem('memoria_viva_alertas')) || [];
+            todosAlertas.splice(index, 1);
+            localStorage.setItem('memoria_viva_alertas', JSON.stringify(todosAlertas));
+            carregarAlertasCuidador();
+        }
+
+        function carregarRotinasCadastradas() {
+            const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+            const pacienteAtivo = localStorage.getItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`);
+            const todasRotinas = JSON.parse(localStorage.getItem('memoria_viva_rotinas')) || [];
+            const containerRotinas = document.getElementById('lista-rotinas');
+
+            let encontrouRotina = false;
+            containerRotinas.innerHTML = '';
+
+            todasRotinas.forEach((rotina, indexOriginal) => {
+                if (rotina.paciente === pacienteAtivo) {
+                    encontrouRotina = true;
+                    const item = document.createElement('div');
+                    item.style.backgroundColor = '#f0f8f8';
+                    item.style.padding = '8px 10px';
+                    item.style.borderRadius = '6px';
+                    item.style.fontSize = '0.85rem';
+                    item.style.border = '1px solid #b2dfdb';
+                    item.style.display = 'flex';
+                    item.style.justifyContent = 'space-between';
+                    item.style.alignItems = 'center';
+                    item.style.gap = '8px';
+
+                    const icone = rotina.tipo === 'medicamento' ? '💊' : '📅';
+
+                    item.innerHTML = `
+                        <div>
+                            <strong style="color: #3b7580;">${icone} [${rotina.horario}]</strong> ${rotina.titulo}
+                        </div>
+                        <button class="btn-lixeira" onclick="removerRotina(${indexOriginal})" title="Excluir este compromisso">
+                            🗑️
+                        </button>
+                    `;
+                    containerRotinas.appendChild(item);
+                }
+            });
+
+            if (!encontrouRotina) {
+                containerRotinas.innerHTML = '<p style="font-size: 0.9rem; color: #666; margin: 0;">Nenhum item cadastrado para este paciente.</p>';
+            }
+        }
+
+        function removerRotina(index) {
+            if (confirm("Deseja realmente remover este item da rotina do paciente?")) {
+                let todasRotinas = JSON.parse(localStorage.getItem('memoria_viva_rotinas')) || [];
+                todasRotinas.splice(index, 1);
+                localStorage.setItem('memoria_viva_rotinas', JSON.stringify(todasRotinas));
+                carregarRotinasCadastradas();
+            }
+        }
+
+        document.getElementById('form-adicionar-rotina').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const horario = document.getElementById('rotina-horario').value.trim();
+            const titulo = document.getElementById('rotina-titulo').value.trim();
+            const tipo = document.getElementById('rotina-tipo').value;
+            
+            const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+            const pacienteAtivo = localStorage.getItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`);
+
+            let rotinas = JSON.parse(localStorage.getItem('memoria_viva_rotinas')) || [];
+            rotinas.push({ paciente: pacienteAtivo, horario, titulo, tipo });
+            localStorage.setItem('memoria_viva_rotinas', JSON.stringify(rotinas));
+
+            alert('Rotina adicionada com sucesso para o paciente!');
+            document.getElementById('form-adicionar-rotina').reset();
+            carregarRotinasCadastradas();
+        });
+
+        function fazerLogout() {
+            localStorage.removeItem('memoria_viva_usuario_logado');
+        }
+
+        window.onload = checarVinculo;
+    </script>
+</body>
+</html>
+                </div>
+            </div>
+
+            <!-- Seção de Rotina Cadastrada -->
+            <div class="form-card" style="border-left: 5px solid #4a919e;">
+                <h2 style="font-size: 1.1rem; color: #4a919e; margin-top: 0;">📅 Itens Cadastrados na Rotina</h2>
+                <div id="lista-rotinas" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto;">
+                    <p style="font-size: 0.9rem; color: #666; margin: 0;">Nenhum item cadastrado ainda.</p>
+                </div>
+            </div>
+
+            <button onclick="desvincularPaciente()" style="background: none; border: none; color: #d9534f; font-weight: bold; cursor: pointer; margin-top: 5px;">Trocar / Desvincular Paciente</button>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
+    <script>
+        localStorage.setItem('memoria_viva_perfil', 'cuidador');
+
+        function checarVinculo() {
+            const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+            const vinculado = localStorage.getItem(`memoria_viva_vinculado_${cuidadorLogado}`);
+
+            if (vinculado === 'true') {
+                document.getElementById('secao-vinculacao').style.display = 'none';
+                document.getElementById('secao-painel-real').style.display = 'flex';
+                
+                const pacienteAtivo = localStorage.getItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`) || 'Paciente';
+                document.getElementById('nome-paciente-ativo').innerText = pacienteAtivo;
+
+                carregarAlertasCuidador();
                 setInterval(carregarAlertasCuidador, 3000);
             } else {
                 document.getElementById('secao-vinculacao').style.display = 'flex';
