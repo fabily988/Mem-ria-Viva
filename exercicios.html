@@ -80,5 +80,38 @@
         <a href="home-paciente.html" style="color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Voltar</a>
     </header>
 
+    <div class="exercicios-container">
+        <h1 style="font-size: 1.5rem; text-align: center; color: var(--text-color); margin-bottom: 5px;">Exercícios de Memória</h1>
+        <p style="text-align: center; color: #666; font-size: 0.95rem; margin-top: -10px;">Perguntas leves para estimular o raciocínio e a atenção.</p>
+        
+        <!-- Bloco de Exercícios -->
+        <div class="exercicio-card">
+            <span class="pergunta-titulo">🧠 1. Em qual cidade você nasceu ou costuma morar?</span>
+            <input type="text" id="resp-1" placeholder="Digite sua resposta...">
+            <button class="btn-verificar" onclick="verificarResposta(1, 'cidade')">Responder</button>
+            <span id="feedback-1" class="resposta-feedback"></span>
+        </div>
+
+        <div class="exercicio-card">
+            <span class="pergunta-titulo">☕ 2. Qual é a sua bebida preferida no café da manhã?</span>
+            <input type="text" id="resp-2" placeholder="Ex: Café, leite, suco...">
+            <button class="btn-verificar" onclick="verificarResposta(2, 'bebida')">Responder</button>
+            <span id="feedback-2" class="resposta-feedback"></span>
+        </div>
+
+        <div class="exercicio-card">
+            <span class="pergunta-titulo">🌸 3. Qual estação do ano você mais gosta?</span>
+            <input type="text" id="resp-3" placeholder="Ex: Verão, inverno...">
+            <button class="btn-verificar" onclick="verificarResposta(3, 'estacao')">Responder</button>
+            <span id="feedback-3" class="resposta-feedback"></span>
+        </div>
+
+        <a href="home-paciente.html" class="btn-voltar">Voltar para o Início</a>
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
 </body>
 </html>
