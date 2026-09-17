@@ -139,5 +139,87 @@
         <a href="home-paciente.html" style="color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Voltar</a>
     </header>
 
+    <div class="memorias-container">
+        <h1 style="font-size: 1.5rem; text-align: center; color: var(--text-color); margin-bottom: 0;">Minhas Memórias</h1>
+        <p style="text-align: center; color: #666; font-size: 0.95rem; margin-top: -5px; margin-bottom: 5px;">Histórias marcantes e especiais da sua vida.</p>
+        
+        <!-- Botão Criar Memória -->
+        <button class="btn-adicionar" onclick="abrirModal()">
+            <span>➕</span> Criar Nova Memória
+        </button>
+
+        <!-- Lista de Memórias -->
+        <div id="lista-memorias" style="display: flex; flex-direction: column; gap: 15px;">
+            <!-- Preenchido via JavaScript -->
+        </div>
+
+        <a href="home-paciente.html" class="btn-voltar">Voltar para o Início</a>
+    </div>
+
+    <!-- Modal Formulario -->
+    <div id="modal-memoria" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 1.2rem; color: var(--text-color); margin: 0; text-align: center;">Nova Memória</h2>
+            
+            <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Ano (ex: 1980):</label>
+            <input type="text" id="novo-ano" placeholder="Ex: 1985">
+
+            <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Título:</label>
+            <input type="text" id="novo-titulo" placeholder="Ex: Nascimento do meu neto">
+
+            <label style="font-size: 0.85rem; font-weight: bold; color: #555;">História / Lembrança:</label>
+            <textarea id="nova-descricao" rows="3" placeholder="Escreva sobre esse momento..."></textarea>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button onclick="fecharModal()" style="flex: 1; padding: 10px; border-radius: 8px; border: none; background-color: #ccc; cursor: pointer; font-weight: bold;">Cancelar</button>
+                <button onclick="salvarMemoria()" style="flex: 1; padding: 10px; border-radius: 8px; border: none; background-color: #b05c9a; color: white; cursor: pointer; font-weight: bold;">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
+</body>
+</html>
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .modal-card input, .modal-card textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container" style="flex-direction: row; gap: 10px; margin: 0;">
+            <img src="img/logo.jpg" alt="Logo" style="width: 40px; margin: 0;" onerror="this.style.display='none'">
+            <span style="font-size: 1.2rem;">Memória Viva</span>
+        </div>
+        <a href="home-paciente.html" style="color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Voltar</a>
+    </header>
+
 </body>
 </html>
