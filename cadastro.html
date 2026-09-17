@@ -98,7 +98,16 @@
                 localStorage.removeItem(`memoria_viva_cuidador_vinculado_${nome}`);
                 localStorage.removeItem(`memoria_viva_nome_cuidador_ativo_${nome}`);
             }
+
+            alert('Cadastro realizado com sucesso! Faça seu login.');
+            
+            if (tipo === 'paciente') {
+                window.location.href = 'index.html';
+            } else {
+                window.location.href = 'login-cuidador.html';
+            }
         });
     </script>
 </body>
+</html>
 </html>
