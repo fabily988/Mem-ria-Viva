@@ -34,6 +34,7 @@
             text-align: center;
             margin-bottom: 10px;
         }
+        /* O Livro */
         .livro-card {
             background-color: #4a919e;
             width: 100%;
@@ -66,6 +67,7 @@
             min-height: 320px;
             position: relative;
         }
+        /* Detalhe da lombada do livro */
         .livro-conteudo::before {
             content: "";
             position: absolute;
@@ -101,6 +103,222 @@
         .livro-descricao {
             font-size: 0.95rem;
             line-height: 1.4;
+            padding: 0 10px;
+        }
+        /* Controles de Navegação (Setas) */
+        .navegacao-livro {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 380px;
+            margin-top: 20px;
+        }
+        .btn-pagina {
+            background: none;
+            border: none;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            padding: 0 15px;
+            transition: transform 0.2s;
+        }
+        .btn-pagina:hover {
+            transform: scale(1.1);
+            color: #b05c9a;
+        }
+        .btn-pagina:disabled {
+            opacity: 0.2;
+            cursor: default;
+            transform: none;
+        }
+        /* Botões de Ação do Cuidador */
+        .botoes-acao {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 340px;
+        }
+        .btn-acao {
+            flex: 1;
+            background-color: #ab66ca;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-acao:hover {
+            background-color: #9a53b5;
+        }
+        .btn-voltar-home {
+            margin-top: 15px;
+            color: #555;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container" style="flex-direction: row; gap: 10px; margin: 0;">
+            <img src="img/logo.png" alt="Logo" style="width: 40px; margin: 0;" onerror="this.style.display='none'">
+            <span style="font-size: 1.2rem;">Memória Viva</span>
+        </div>
+        <a href="home-paciente.html" style="color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Voltar</a>
+    </header>
+
+    <div class="album-pagina-container">
+        <h1 class="titulo-pagina">Minha família</h1>
+
+        <!-- O Livro / Álbum -->
+        <div style="display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center;">
+            <button class="btn-pagina" id="btn-voltar-pagina" onclick="mudarPagina(-1)">&#10094;</button>
+            
+            <div class="livro-card">
+                <div class="livro-cabecalho">Álbum de fotos</div>
+                <div class="livro-conteudo" id="conteudo-pagina">
+                    <!-- Conteúdo gerado dinamicamente via JS -->
+                </div>
+            </div>
+
+            <button class="btn-pagina" id="btn-avancar-pagina" onclick="mudarPagina(1)">&#10095;</button>
+        </div>
+
+        <!-- Botões inferiores -->
+        <div class="botoes-acao">
+            <button class="btn-acao" onclick="adicionarFamiliarPrompt()">+ Adicionar familiar</button>
+            <button class="btn-acao" style="background-color: #d9534f;" onclick="removerFamiliarAtual()">Remover familiar</button>
+        </div>
+
+        <a href="home-paciente.html" class="btn-voltar-home">← Voltar ao Início</a>
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
+    <script>
+        // Lista padrão inicial idêntica ao seu design
+        let paginasAlbum = JSON.parse(localStorage.getItem('memoria_viva_familia')) || [
+            {
+                tipo: "capa",
+                titulo: "Contém fotos da sua família e o contato de cada um ♡",
+                sub: "Clique no ícone > para abrir"
+            },
+            {
+                tipo: "familiar",
+                nome: "Ana Clara",
+                parentesco: "Filha mais velha",
+                descricao: "Mora perto e sempre traz pão de queijo aos domingos.",
+                foto: "img/familia1.jpg"
+            },
+            {
+                tipo: "familiar",
+                nome: "Carlos Eduardo",
+                parentesco: "Filho",
+                descricao: "Engenheiro, pai do Lucas e da Sofia.",
+                foto: "img/familia2.jpg"
+            },
+            {
+                tipo: "familiar",
+                nome: "Mariana Souza",
+                parentesco: "Neta",
+                descricao: "Estuda faculdade de medicina em outra cidade.",
+                foto: "img/familia3.jpg"
+            },
+            {
+                tipo: "fim",
+                titulo: "Chegamos ao fim ♡",
+                sub: "Clique no ícone < para voltar ao início"
+            }
+        ];
+
+        let paginaAtual = 0;
+
+        function renderizarPagina() {
+            const container = document.getElementById('conteudo-pagina');
+            const item = paginasAlbum[paginaAtual];
+
+            if (item.tipo === "capa" || item.tipo === "fim") {
+                container.innerHTML = `
+                    <div style="font-size: 1.35rem; line-height: 1.5; font-weight: 500; margin-bottom: 25px; padding-left: 15px;">
+                        ${item.titulo}
+                    </div>
+                    <div style="font-size: 0.95rem; font-style: italic; opacity: 0.9; margin-top: auto;">
+                        ${item.sub}
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <img src="${item.foto}" class="livro-foto" alt="${item.nome}" onerror="this.src='https://via.placeholder.com/130?text=Foto'">
+                    <div class="livro-nome">${item.nome}</div>
+                    <div class="livro-parentesco">${item.parentesco}</div>
+                    <div class="livro-descricao">${item.descricao}</div>
+                `;
+            }
+
+            // Habilita ou desabilita setas
+            document.getElementById('btn-voltar-pagina').disabled = (paginaAtual === 0);
+            document.getElementById('btn-avancar-pagina').disabled = (paginaAtual === paginasAlbum.length - 1);
+        }
+
+        function mudarPagina(direcao) {
+            paginaAtual += direcao;
+            if (paginaAtual < 0) paginaAtual = 0;
+            if (paginaAtual >= paginasAlbum.length) paginaAtual = paginasAlbum.length - 1;
+            renderizarPagina();
+        }
+
+        function adicionarFamiliarPrompt() {
+            const nome = prompt("Nome do familiar:");
+            if (!nome) return;
+            const parentesco = prompt("Grau de parentesco (ex: Filho, Neta):") || "";
+            const descricao = prompt("Breve descrição / lembrança:") || "";
+            const foto = prompt("Nome do arquivo da foto (ex: img/foto4.jpg) ou deixe em branco:") || "img/padrao.jpg";
+
+            const novoFamiliar = { tipo: "familiar", nome, parentesco, descricao, foto };
+
+            // Insere antes da página de "fim"
+            paginasAlbum.splice(paginasAlbum.length - 1, 0, novoFamiliar);
+            localStorage.setItem('memoria_viva_familia', JSON.stringify(paginasAlbum));
+            
+            alert("Familiar adicionado com sucesso ao álbum!");
+            paginaAtual = paginasAlbum.length - 2; // Vai direto para a página dele
+            renderizarPagina();
+        }
+
+        function removerFamiliarAtual() {
+            const item = paginasAlbum[paginaAtual];
+            if (item.tipo === "capa" || item.tipo === "fim") {
+                alert("Você não pode remover as páginas de capa ou fim.");
+                return;
+            }
+
+            if (confirm(`Deseja realmente remover ${item.nome} do álbum?`)) {
+                paginasAlbum.splice(paginaAtual, 1);
+                localStorage.setItem('memoria_viva_familia', JSON.stringify(paginasAlbum));
+                if (paginaAtual >= paginasAlbum.length) {
+                    paginaAtual = paginasAlbum.length - 1;
+                }
+                renderizarPagina();
+                alert("Familiar removido.");
+            }
+        }
+
+        window.onload = renderizarPagina;
+    </script>
+</body>
+</html>
             padding: 0 10px;
         }
         .btn-pagina {
