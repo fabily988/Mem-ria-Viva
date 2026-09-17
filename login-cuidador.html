@@ -44,6 +44,23 @@
 
             // Busca os usuários salvos no navegador (do cadastro)
             const usuariosCadastrados = JSON.parse(localStorage.getItem('memoria_viva_usuarios')) || [];
+
+            // Procura obrigatoriamente um cuidador cadastrado no sistema
+            const cuidadorEncontrado = usuariosCadastrados.find(u => 
+                (u.nome.toLowerCase() === entradaDigitada || (u.usuario && u.usuario.toLowerCase() === entradaDigitada) || (u.email && u.email.toLowerCase() === entradaDigitada)) && 
+                u.senha === senhaDigitada && 
+                (u.tipo === 'cuidador' || u.perfil === 'cuidador')
+            );
+
+            if (cuidadorEncontrado) {
+                localStorage.setItem('memoria_viva_usuario_logado', cuidadorEncontrado.nome || cuidadorEncontrado.usuario);
+                localStorage.setItem('memoria_viva_perfil', 'cuidador');
+
+                alert('Login de cuidador efetuado com sucesso!');
+                window.location.href = 'painel-cuidador.html';
+            } else {
+                alert('Acesso negado: Nome/E-mail ou senha incorretos, ou usuário não cadastrado como Cuidador.');
+            }
         });
     </script>
 </body>
