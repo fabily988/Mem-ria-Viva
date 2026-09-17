@@ -65,5 +65,61 @@
         <a href="index.html" onclick="fazerLogout()" style="color: #b05c9a; text-decoration: none; font-weight: bold; font-size: 0.9rem;">Sair</a>
     </header>
 
+    <div class="painel-container">
+        
+        <!-- TELA 1: VINCULAÇÃO POR CÓDIGO -->
+        <div id="secao-vinculacao" class="form-card" style="display: none; text-align: center;">
+            <h2 style="font-size: 1.3rem; color: var(--text-color);">Vincular ao Paciente</h2>
+            <p style="font-size: 0.9rem; color: #666;">Por segurança, digite o código de 6 dígitos fornecido pelo paciente para gerenciar a conta dele.</p>
+            
+            <input type="text" id="input-codigo-vinculo" placeholder="Ex: 123456" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 3px;">
+            <button type="button" class="btn-primary" onclick="verificarCodigoVinculo()">Confirmar Código</button>
+        </div>
+
+        <!-- TELA 2: PAINEL REAL DO CUIDADOR -->
+        <div id="secao-painel-real" style="display: none; flex-direction: column; gap: 15px;">
+            <h1 style="font-size: 1.4rem; text-align: center; color: var(--text-color);">Adicionar Rotina / Remédio</h1>
+            
+            <form id="form-adicionar-rotina" class="form-card">
+                <label style="font-weight: bold; font-size: 0.9rem; color: #333;">Horário (ex: 08:00 - Manhã):</label>
+                <input type="text" id="rotina-horario" placeholder="Ex: 08:00 - Manhã" required>
+
+                <label style="font-weight: bold; font-size: 0.9rem; color: #333;">Descrição do Compromisso ou Remédio:</label>
+                <input type="text" id="rotina-titulo" placeholder="Ex: Tomar remédio X" required>
+
+                <label style="font-weight: bold; font-size: 0.9rem; color: #333;">Tipo de Item:</label>
+                <select id="rotina-tipo">
+                    <option value="compromisso">Compromisso / Atividade</option>
+                    <option value="medicamento">Medicamento (Alerta)</option>
+                </select>
+
+                <button type="submit" class="btn-primary" style="margin-top: 10px;">Salvar para o Paciente</button>
+            </form>
+
+            <!-- Seção de Alertas do Paciente Vinculado -->
+            <div class="form-card" style="border-left: 5px solid #b05c9a;">
+                <h2 style="font-size: 1.1rem; color: #b05c9a; margin-top: 0;">🚨 Alertas do Paciente (<span id="nome-paciente-ativo">...</span>)</h2>
+                <div id="lista-alertas" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto;">
+                    <p style="font-size: 0.9rem; color: #666; margin: 0;">Nenhum alerta recente.</p>
+                </div>
+            </div>
+
+            <!-- Seção de Rotina Cadastrada -->
+            <div class="form-card" style="border-left: 5px solid #4a919e;">
+                <h2 style="font-size: 1.1rem; color: #4a919e; margin-top: 0;">📅 Itens Cadastrados na Rotina</h2>
+                <div id="lista-rotinas" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto;">
+                    <p style="font-size: 0.9rem; color: #666; margin: 0;">Nenhum item cadastrado ainda.</p>
+                </div>
+            </div>
+
+            <button onclick="desvincularPaciente()" style="background: none; border: none; color: #d9534f; font-weight: bold; cursor: pointer; margin-top: 5px;">Trocar / Desvincular Paciente</button>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
 </body>
 </html>
