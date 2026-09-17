@@ -79,6 +79,25 @@
                 alert('Este e-mail já está cadastrado!');
                 return;
             }
+
+            const codigoVinculoGerado = (tipo === 'paciente') ? Math.floor(100000 + Math.random() * 900000).toString() : '';
+
+            usuarios.push({ 
+                nome, 
+                usuario: nome, 
+                email, 
+                senha, 
+                tipo,
+                perfil: tipo, 
+                codigoVinculo: codigoVinculoGerado 
+            });
+
+            localStorage.setItem('memoria_viva_usuarios', JSON.stringify(usuarios));
+
+            if (tipo === 'paciente') {
+                localStorage.removeItem(`memoria_viva_cuidador_vinculado_${nome}`);
+                localStorage.removeItem(`memoria_viva_nome_cuidador_ativo_${nome}`);
+            }
         });
     </script>
 </body>
