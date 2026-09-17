@@ -129,5 +129,24 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
+    <script>
+        function checarVinculoCuidador() {
+            const pacienteLogado = localStorage.getItem('memoria_viva_usuario_logado') || localStorage.getItem('memoria_viva_paciente_ativo');
+            
+            // Busca o cuidador específico deste paciente
+            const cuidadorVinculado = localStorage.getItem(`memoria_viva_cuidador_vinculado_${pacienteLogado}`);
+            const nomeCuidadorAtivo = localStorage.getItem(`memoria_viva_nome_cuidador_ativo_${pacienteLogado}`);
+
+            if (cuidadorVinculado === 'true' && nomeCuidadorAtivo) {
+                document.getElementById('nome-cuidador').innerText = nomeCuidadorAtivo;
+                document.getElementById('link-telefone').style.display = 'flex';
+            } else {
+                document.getElementById('nome-cuidador').innerText = "Nenhum cuidador vinculado no momento";
+                document.getElementById('link-telefone').style.display = 'none';
+            }
+        }
+
+        window.onload = checarVinculoCuidador;
+    </script>
 </body>
 </html>
