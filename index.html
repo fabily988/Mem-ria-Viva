@@ -36,6 +36,36 @@
     <footer>
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
+
+<script>
+    document.getElementById('form-login-paciente').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const nomeDigitado = document.getElementById('login-nome').value.trim().toLowerCase();
+    const senhaDigitada = document.getElementById('login-senha').value;
+
+    const usuariosCadastrados = JSON.parse(localStorage.getItem('memoria_viva_usuarios')) || [];
+
+    const usuarioEncontrado = usuariosCadastrados.find(u => 
+        (u.nome.toLowerCase() === nomeDigitado || (u.usuario && u.usuario.toLowerCase() === nomeDigitado) || (u.email && u.email.toLowerCase() === nomeDigitado)) && 
+        u.senha === senhaDigitada && 
+        (u.tipo === 'paciente' || u.perfil === 'paciente')
+    );
+
+    if (usuarioEncontrado) {
+        localStorage.setItem('memoria_viva_usuario_logado', usuarioEncontrado.nome || usuarioEncontrado.usuario);
+        localStorage.setItem('memoria_viva_perfil', 'paciente');
+        if (usuarioEncontrado.codigoVinculo) {
+            localStorage.setItem('memoria_viva_codigo_vinculo', usuarioEncontrado.codigoVinculo);
+        }
+        
+        alert('Login realizado com sucesso! Seja bem-vindo.');
+        window.location.href = 'home-paciente.html';
+    } else {
+        alert('Acesso negado: Nome/E-mail ou senha incorretos, ou usuário não cadastrado como Paciente.');
+    }
+});
+</script>
     
 </body>
 </html>
