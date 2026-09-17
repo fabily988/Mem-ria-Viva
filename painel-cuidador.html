@@ -121,5 +121,70 @@
         &copy; 2026 Memória Viva. Todos os direitos reservados.
     </footer>
 
+    <script>
+        localStorage.setItem('memoria_viva_perfil', 'cuidador');
+
+        function checarVinculo() {
+            const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+            const vinculado = localStorage.getItem(`memoria_viva_vinculado_${cuidadorLogado}`);
+
+            if (vinculado === 'true') {
+                document.getElementById('secao-vinculacao').style.display = 'none';
+                document.getElementById('secao-painel-real').style.display = 'flex';
+                
+                const pacienteAtivo = localStorage.getItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`) || 'Paciente';
+                document.getElementById('nome-paciente-ativo').innerText = pacienteAtivo;
+            } else {
+                document.getElementById('secao-vinculacao').style.display = 'flex';
+                document.getElementById('secao-painel-real').style.display = 'none';
+            }
+        }
+
+        function verificarCodigoVinculo() {
+            const digitado = document.getElementById('input-codigo-vinculo').value.trim();
+            let usuariosCadastrados = JSON.parse(localStorage.getItem('memoria_viva_usuarios')) || [];
+
+            let pacienteEncontrado = usuariosCadastrados.find(u => u.codigoVinculo === digitado);
+
+            if (pacienteEncontrado) {
+                const nomePaciente = pacienteEncontrado.nome || pacienteEncontrado.usuario;
+                const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+
+                localStorage.setItem(`memoria_viva_vinculado_${cuidadorLogado}`, 'true');
+                localStorage.setItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`, nomePaciente);
+
+                localStorage.setItem(`memoria_viva_cuidador_vinculado_${nomePaciente}`, 'true');
+                localStorage.setItem(`memoria_viva_nome_cuidador_ativo_${nomePaciente}`, cuidadorLogado);
+
+                alert(`Vínculo realizado com sucesso com o paciente ${nomePaciente}!`);
+                checarVinculo();
+            } else {
+                alert("Código incorreto ou paciente não encontrado! Verifique os 6 dígitos na conta do paciente.");
+            }
+        }
+
+        function desvincularPaciente() {
+            if (confirm("Deseja realmente se desvincular deste paciente?")) {
+                const cuidadorLogado = localStorage.getItem('memoria_viva_usuario_logado') || 'cuidador_padrao';
+                const pacienteAtivo = localStorage.getItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`);
+
+                localStorage.removeItem(`memoria_viva_vinculado_${cuidadorLogado}`);
+                localStorage.removeItem(`memoria_viva_paciente_ativo_${cuidadorLogado}`);
+                
+                if (pacienteAtivo) {
+                    localStorage.removeItem(`memoria_viva_cuidador_vinculado_${pacienteAtivo}`);
+                    localStorage.removeItem(`memoria_viva_nome_cuidador_ativo_${pacienteAtivo}`);
+                }
+                
+                checarVinculo();
+            }
+        }
+
+        function fazerLogout() {
+            localStorage.removeItem('memoria_viva_usuario_logado');
+        }
+
+        window.onload = checarVinculo;
+    </script>
 </body>
 </html>
