@@ -24,3 +24,43 @@ body {
     align-items: center;
     padding: 20px;
 }
+
+/* Container Centralizador */
+.main-container {
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: auto 0;
+}
+
+/* Logo Ajustada */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo-container img {
+    width: 120px; /* Controla o tamanho perfeito da logo */
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.logo-container span {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Títulos */
+h1.page-title, .main-container h1 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-weight: bold;
+}
