@@ -5,6 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memória Viva - Rotina e Medicamentos</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .rotina-container {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .card-item {
+            background-color: #FFF;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid var(--primary-color);
+        }
+        .card-item.medicamento {
+            border-left-color: var(--accent-color);
+        }
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+        .card-titulo {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .card-horario {
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: 600;
+        }
+        .btn-excluir {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .btn-excluir:hover {
+            background-color: #cc0000;
+        }
+        .btn-voltar {
+            background-color: #ccc;
+            color: #333;
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,4 +83,3 @@
 
 </body>
 </html>
-
