@@ -146,6 +146,75 @@
             }
         }
 
+        function enviarAlertaUrgencia() {
+            const pacienteLogado = localStorage.getItem('memoria_viva_usuario_logado') || localStorage.getItem('memoria_viva_paciente_ativo');
+            const cuidadorVinculado = localStorage.getItem(`memoria_viva_cuidador_vinculado_${pacienteLogado}`);
+
+            if (cuidadorVinculado !== 'true' || !pacienteLogado) {
+                alert("⚠️ Não foi possível enviar o alerta: você ainda não possui um cuidador vinculado à sua conta. Peça para o seu cuidador inserir o seu código de vínculo na Área do Cuidador.");
+                return;
+            }
+
+            const alertas = JSON.parse(localStorage.getItem('memoria_viva_alertas')) || [];
+            alertas.unshift({
+                paciente: pacienteLogado,
+                data: new Date().toLocaleTimeString(),
+                mensagem: "O paciente acionou o botão de ajuda na tela de emergência!"
+            });
+            localStorage.setItem('memoria_viva_alertas', JSON.stringify(alertas));
+
+            alert("🚨 Alerta enviado com sucesso! O seu cuidador foi notificado.");
+        }
+
+        window.onload = checarVinculoCuidador;
+    </script>
+</body>
+</html>
+
+    <div class="ajuda-container">
+        <h1 style="font-size: 1.6rem; color: var(--text-color); margin-bottom: 0;">Precisa de Ajuda?</h1>
+        
+        <div class="aviso-card">
+            Fique calmo(a). Se precisar de alguma coisa, use os botões abaixo para avisar o responsável imediatamente.
+        </div>
+
+        <div class="contato-info">
+            <span style="font-size: 0.9rem; color: #666;">Cuidador(a) Responsável:</span>
+            <span style="font-size: 1.2rem; font-weight: bold; color: var(--text-color);" id="nome-cuidador">Aguardando vínculo com cuidador</span>
+        </div>
+
+        <a href="tel:5511999999999" class="btn-ligar" id="link-telefone" style="display: none;">
+            📞 Ligar para o Cuidador
+        </a>
+
+        <a href="#" class="btn-emergencia" onclick="enviarAlertaUrgencia()">
+            🚨 Chamar Urgência / Ajuda
+        </a>
+
+        <a href="home-paciente.html" class="btn-voltar">Voltar para o Início</a>
+    </div>
+
+    <footer>
+        &copy; 2026 Memória Viva. Todos os direitos reservados.
+    </footer>
+
+    <script>
+        function checarVinculoCuidador() {
+            const pacienteLogado = localStorage.getItem('memoria_viva_usuario_logado') || localStorage.getItem('memoria_viva_paciente_ativo');
+            
+            // Busca o cuidador específico deste paciente
+            const cuidadorVinculado = localStorage.getItem(`memoria_viva_cuidador_vinculado_${pacienteLogado}`);
+            const nomeCuidadorAtivo = localStorage.getItem(`memoria_viva_nome_cuidador_ativo_${pacienteLogado}`);
+
+            if (cuidadorVinculado === 'true' && nomeCuidadorAtivo) {
+                document.getElementById('nome-cuidador').innerText = nomeCuidadorAtivo;
+                document.getElementById('link-telefone').style.display = 'flex';
+            } else {
+                document.getElementById('nome-cuidador').innerText = "Nenhum cuidador vinculado no momento";
+                document.getElementById('link-telefone').style.display = 'none';
+            }
+        }
+
         window.onload = checarVinculoCuidador;
     </script>
 </body>
