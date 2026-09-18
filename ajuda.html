@@ -17,6 +17,7 @@
             align-items: center;
             text-align: center;
         }
+
         .aviso-card {
             background-color: #FFF3CD;
             border: 1px solid #FFEEBA;
@@ -28,6 +29,7 @@
             width: 100%;
             box-sizing: border-box;
         }
+
         .btn-emergencia {
             background-color: #b05c9a;
             color: white;
@@ -44,9 +46,11 @@
             gap: 10px;
             transition: background-color 0.2s;
         }
+
         .btn-emergencia:hover {
             background-color: #9c4b86;
         }
+
         .btn-ligar {
             background-color: #4a919e;
             color: white;
@@ -63,9 +67,11 @@
             gap: 10px;
             transition: background-color 0.2s;
         }
+
         .btn-ligar:hover {
             background-color: #3b7580;
         }
+
         .contato-info {
             background-color: #FFF;
             padding: 20px;
@@ -77,6 +83,7 @@
             flex-direction: column;
             gap: 5px;
         }
+
         .btn-voltar {
             background-color: #ccc;
             color: #333;
@@ -164,55 +171,6 @@
             localStorage.setItem('memoria_viva_alertas', JSON.stringify(alertas));
 
             alert("🚨 Alerta enviado com sucesso! O seu cuidador foi notificado.");
-        }
-
-        window.onload = checarVinculoCuidador;
-    </script>
-</body>
-</html>
-
-    <div class="ajuda-container">
-        <h1 style="font-size: 1.6rem; color: var(--text-color); margin-bottom: 0;">Precisa de Ajuda?</h1>
-        
-        <div class="aviso-card">
-            Fique calmo(a). Se precisar de alguma coisa, use os botões abaixo para avisar o responsável imediatamente.
-        </div>
-
-        <div class="contato-info">
-            <span style="font-size: 0.9rem; color: #666;">Cuidador(a) Responsável:</span>
-            <span style="font-size: 1.2rem; font-weight: bold; color: var(--text-color);" id="nome-cuidador">Aguardando vínculo com cuidador</span>
-        </div>
-
-        <a href="tel:5511999999999" class="btn-ligar" id="link-telefone" style="display: none;">
-            📞 Ligar para o Cuidador
-        </a>
-
-        <a href="#" class="btn-emergencia" onclick="enviarAlertaUrgencia()">
-            🚨 Chamar Urgência / Ajuda
-        </a>
-
-        <a href="home-paciente.html" class="btn-voltar">Voltar para o Início</a>
-    </div>
-
-    <footer>
-        &copy; 2026 Memória Viva. Todos os direitos reservados.
-    </footer>
-
-    <script>
-        function checarVinculoCuidador() {
-            const pacienteLogado = localStorage.getItem('memoria_viva_usuario_logado') || localStorage.getItem('memoria_viva_paciente_ativo');
-            
-            // Busca o cuidador específico deste paciente
-            const cuidadorVinculado = localStorage.getItem(`memoria_viva_cuidador_vinculado_${pacienteLogado}`);
-            const nomeCuidadorAtivo = localStorage.getItem(`memoria_viva_nome_cuidador_ativo_${pacienteLogado}`);
-
-            if (cuidadorVinculado === 'true' && nomeCuidadorAtivo) {
-                document.getElementById('nome-cuidador').innerText = nomeCuidadorAtivo;
-                document.getElementById('link-telefone').style.display = 'flex';
-            } else {
-                document.getElementById('nome-cuidador').innerText = "Nenhum cuidador vinculado no momento";
-                document.getElementById('link-telefone').style.display = 'none';
-            }
         }
 
         window.onload = checarVinculoCuidador;
