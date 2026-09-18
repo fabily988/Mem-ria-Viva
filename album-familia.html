@@ -46,7 +46,6 @@
             overflow: hidden;
             position: relative;
             border: 3px solid #38707a;
-            box-sizing: border-box;
         }
         .livro-cabecalho {
             background-color: #ab66ca;
@@ -67,14 +66,12 @@
             justify-content: center;
             min-height: 320px;
             position: relative;
-            box-sizing: border-box;
-            width: 100%;
         }
         /* Detalhe da lombada do livro */
         .livro-conteudo::before {
             content: "";
             position: absolute;
-            left: 15px;
+            left: 20px;
             top: 15px;
             bottom: 15px;
             width: 4px;
@@ -90,42 +87,24 @@
             margin-bottom: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        
-        /* CORREÇÃO DO TEXTO VERTICAL */
         .livro-nome {
-            font-size: 1.4rem !important;
-            font-weight: bold !important;
-            margin-bottom: 6px !important;
-            word-break: normal !important;
-            white-space: normal !important;
-            width: 100% !important;
-            display: block !important;
-            text-align: center !important;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 4px;
         }
         .livro-parentesco {
-            font-size: 1rem !important;
-            background-color: rgba(255,255,255,0.2) !important;
-            padding: 4px 14px !important;
-            border-radius: 12px !important;
-            margin-bottom: 10px !important;
-            display: inline-block !important;
-            word-break: normal !important;
-            white-space: normal !important;
-            max-width: 90% !important;
-            text-align: center !important;
+            font-size: 1.1rem;
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: inline-block;
         }
         .livro-descricao {
-            font-size: 0.95rem !important;
-            line-height: 1.4 !important;
-            padding: 0 10px !important;
-            word-break: normal !important;
-            white-space: normal !important;
-            width: 100% !important;
-            display: block !important;
-            text-align: center !important;
-            box-sizing: border-box !important;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            padding: 0 10px;
         }
-
         /* Controles de Navegação (Setas) */
         .btn-pagina {
             background: none;
@@ -134,7 +113,7 @@
             font-weight: bold;
             color: #333;
             cursor: pointer;
-            padding: 0 10px;
+            padding: 0 15px;
             transition: transform 0.2s;
         }
         .btn-pagina:hover {
@@ -179,28 +158,10 @@
             font-size: 0.9rem;
         }
 
-        /* --- CORREÇÃO DOS PLACEHOLDERS DO MODAL --- */
-        #modal-adicionar input[type="text"],
-        #modal-adicionar textarea {
-            background-color: #ffffff !important;
-            color: #111111 !important;
-            border: 1px solid #777777 !important;
-            padding: 10px !important;
-            border-radius: 8px !important;
-            font-size: 0.95rem !important;
-            box-sizing: border-box !important;
-            width: 100% !important;
-        }
-
-        #modal-adicionar input[type="text"]::-webkit-input-placeholder,
-        #modal-adicionar textarea::-webkit-input-placeholder {
-            color: #666666 !important;
-            opacity: 1 !important;
-        }
-
-        #modal-adicionar input[type="text"]::placeholder,
+        /* Ajuste Único: Torna o texto de ajuda (placeholder) visível no modal */
+        #modal-adicionar input::placeholder,
         #modal-adicionar textarea::placeholder {
-            color: #666666 !important;
+            color: #555555 !important;
             opacity: 1 !important;
         }
     </style>
@@ -243,19 +204,19 @@
 
     <!-- Modal Pop-up para Upload Local -->
     <div id="modal-adicionar" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: #ffffff !important; padding: 20px; border-radius: 12px; max-width: 320px; width: 90%; display: flex; flex-direction: column; gap: 10px;">
-            <h3 style="color: #4A9B9B !important; text-align: center; margin: 0;">Adicionar Familiar</h3>
+        <div style="background: white; padding: 20px; border-radius: 12px; max-width: 320px; width: 90%; display: flex; flex-direction: column; gap: 10px;">
+            <h3 style="color: #4A9B9B; text-align: center; margin: 0;">Adicionar Familiar</h3>
             
             <input type="text" id="add-nome" placeholder="Nome do familiar">
             <input type="text" id="add-parentesco" placeholder="Grau de parentesco (ex: Filha, Neto)">
-            <textarea id="add-descricao" placeholder="Breve lembrança..." style="height: 60px !important; font-family: inherit !important;"></textarea>
+            <textarea id="add-descricao" placeholder="Breve lembrança..." style="height: 60px; font-family: inherit;"></textarea>
             
-            <label style="font-size: 0.85rem; font-weight: bold; color: #333333 !important;">Foto do familiar:</label>
-            <input type="file" id="add-foto-file" accept="image/*" style="background: transparent !important; color: #333333 !important; padding: 0 !important; border: none !important;">
+            <label style="font-size: 0.85rem; font-weight: bold; color: #333;">Foto do familiar:</label>
+            <input type="file" id="add-foto-file" accept="image/*" style="background: transparent !important; color: #333 !important; padding: 0 !important;">
 
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button onclick="salvarNovoFamiliar()" class="btn-acao" style="background: #2e7d32 !important;">Salvar</button>
-                <button onclick="fecharModal()" class="btn-acao" style="background: #888888 !important;">Cancelar</button>
+                <button onclick="salvarNovoFamiliar()" class="btn-acao" style="background: #2e7d32;">Salvar</button>
+                <button onclick="fecharModal()" class="btn-acao" style="background: #888;">Cancelar</button>
             </div>
         </div>
     </div>
