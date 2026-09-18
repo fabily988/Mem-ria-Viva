@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memória Viva - Álbum de Família</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>  
+    <style>
         body {
             background-color: #faf5ed;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -157,6 +157,21 @@
             font-weight: bold;
             font-size: 0.9rem;
         }
+
+        /* Correção específica para os textos dos campos dentro do Modal */
+        .campo-modal {
+            background-color: #ffffff !important;
+            color: #333333 !important;
+            border: 1px solid #cccccc !important;
+            padding: 10px !important;
+            border-radius: 8px !important;
+            font-size: 0.95rem !important;
+        }
+
+        .campo-modal::placeholder {
+            color: #777777 !important;
+            opacity: 1 !important;
+        }
     </style>
 </head>
 <body>
@@ -200,12 +215,12 @@
         <div style="background: white; padding: 20px; border-radius: 12px; max-width: 320px; width: 90%; display: flex; flex-direction: column; gap: 10px;">
             <h3 style="color: #4A9B9B; text-align: center; margin: 0;">Adicionar Familiar</h3>
             
-            <input type="text" id="add-nome" placeholder="Nome do familiar" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #333;">
-            <input type="text" id="add-parentesco" placeholder="Grau de parentesco (ex: Filha, Neto)" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #333;">
-            <textarea id="add-descricao" placeholder="Breve lembrança..." style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; height: 60px; background: #fff; color: #333; font-family: inherit;"></textarea>
+            <input type="text" id="add-nome" class="campo-modal" placeholder="Nome do familiar">
+            <input type="text" id="add-parentesco" class="campo-modal" placeholder="Grau de parentesco (ex: Filha, Neto)">
+            <textarea id="add-descricao" class="campo-modal" placeholder="Breve lembrança..." style="height: 60px; font-family: inherit;"></textarea>
             
             <label style="font-size: 0.85rem; font-weight: bold; color: #333;">Foto do familiar:</label>
-            <input type="file" id="add-foto-file" accept="image/*">
+            <input type="file" id="add-foto-file" accept="image/*" style="background: transparent !important; color: #333 !important; padding: 0 !important;">
 
             <div style="display: flex; gap: 10px; margin-top: 10px;">
                 <button onclick="salvarNovoFamiliar()" class="btn-acao" style="background: #2e7d32;">Salvar</button>
