@@ -67,7 +67,6 @@
             min-height: 320px;
             position: relative;
         }
-        /* Detalhe da lombada do livro */
         .livro-conteudo::before {
             content: "";
             position: absolute;
@@ -105,15 +104,7 @@
             line-height: 1.4;
             padding: 0 10px;
         }
-        /* Controles de Navegação (Setas) */
-        .navegacao-livro {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 380px;
-            margin-top: 20px;
-        }
+        /* Controles de Navegação */
         .btn-pagina {
             background: none;
             border: none;
@@ -133,7 +124,7 @@
             cursor: default;
             transform: none;
         }
-        /* Botões de Ação do Cuidador */
+        /* Botões de Ação */
         .botoes-acao {
             display: flex;
             gap: 10px;
@@ -165,6 +156,33 @@
             font-weight: bold;
             font-size: 0.9rem;
         }
+
+        /* Estilo do botão bonito para abrir a galeria */
+        .btn-escolher-foto {
+            background-color: #4A9B9B;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        .btn-escolher-foto:hover {
+            background-color: #38707a;
+        }
+
+        /* Dicas dos campos de entrada */
+        #modal-adicionar input::placeholder,
+        #modal-adicionar textarea::placeholder {
+            color: #666666 !important;
+            opacity: 1 !important;
+        }
     </style>
 </head>
 <body>
@@ -187,7 +205,7 @@
             <div class="livro-card">
                 <div class="livro-cabecalho">Álbum de fotos</div>
                 <div class="livro-conteudo" id="conteudo-pagina">
-                    <!-- Conteúdo gerado dinamicamente via JS -->
+                    <!-- Conteúdo gerado via JS -->
                 </div>
             </div>
 
@@ -196,11 +214,36 @@
 
         <!-- Botões inferiores -->
         <div class="botoes-acao">
-            <button class="btn-acao" onclick="adicionarFamiliarPrompt()">+ Adicionar familiar</button>
+            <button class="btn-acao" onclick="abrirModal()">+ Adicionar familiar</button>
             <button class="btn-acao" style="background-color: #d9534f;" onclick="removerFamiliarAtual()">Remover familiar</button>
         </div>
 
         <a href="home-paciente.html" class="btn-voltar-home">← Voltar ao Início</a>
+    </div>
+
+    <!-- Modal Pop-up -->
+    <div id="modal-adicionar" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 20px; border-radius: 12px; max-width: 320px; width: 90%; display: flex; flex-direction: column; gap: 10px;">
+            <h3 style="color: #4A9B9B; text-align: center; margin: 0;">Adicionar Familiar</h3>
+            
+            <input type="text" id="add-nome" placeholder="Nome do familiar">
+            <input type="text" id="add-parentesco" placeholder="Grau de parentesco (ex: Filha, Neto)">
+            <textarea id="add-descricao" placeholder="Breve lembrança..." style="height: 60px; font-family: inherit;"></textarea>
+            
+            <!-- Campo de arquivo escondido -->
+            <input type="file" id="add-foto-file" accept="image/*" style="display: none;" onchange="atualizarTextoFoto(this)">
+
+            <!-- Botão personalizado que chama a galeria -->
+            <button type="button" class="btn-escolher-foto" onclick="document.getElementById('add-foto-file').click()">
+                🖼️ Escolher foto da galeria
+            </button>
+            <span id="nome-foto-selecionada" style="font-size: 0.8rem; color: #666; text-align: center;">Nenhuma foto selecionada</span>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button onclick="salvarNovoFamiliar()" class="btn-acao" style="background: #2e7d32;">Salvar</button>
+                <button onclick="fecharModal()" class="btn-acao" style="background: #888;">Cancelar</button>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -208,7 +251,8 @@
     </footer>
 
     <script>
-        // Lista padrão inicial idêntica ao seu design
+        const fotoPadrao = "https://via.placeholder.com/130?text=Sem+Foto";
+
         let paginasAlbum = JSON.parse(localStorage.getItem('memoria_viva_familia')) || [
             {
                 tipo: "capa",
@@ -220,21 +264,7 @@
                 nome: "Ana Clara",
                 parentesco: "Filha mais velha",
                 descricao: "Mora perto e sempre traz pão de queijo aos domingos.",
-                foto: "img/familia1.jpg"
-            },
-            {
-                tipo: "familiar",
-                nome: "Carlos Eduardo",
-                parentesco: "Filho",
-                descricao: "Engenheiro, pai do Lucas e da Sofia.",
-                foto: "img/familia2.jpg"
-            },
-            {
-                tipo: "familiar",
-                nome: "Mariana Souza",
-                parentesco: "Neta",
-                descricao: "Estuda faculdade de medicina em outra cidade.",
-                foto: "img/familia3.jpg"
+                foto: fotoPadrao
             },
             {
                 tipo: "fim",
@@ -260,14 +290,13 @@
                 `;
             } else {
                 container.innerHTML = `
-                    <img src="${item.foto}" class="livro-foto" alt="${item.nome}" onerror="this.src='https://via.placeholder.com/130?text=Foto'">
+                    <img src="${item.foto}" class="livro-foto" alt="${item.nome}" onerror="this.src='${fotoPadrao}'">
                     <div class="livro-nome">${item.nome}</div>
                     <div class="livro-parentesco">${item.parentesco}</div>
                     <div class="livro-descricao">${item.descricao}</div>
                 `;
             }
 
-            // Habilita ou desabilita setas
             document.getElementById('btn-voltar-pagina').disabled = (paginaAtual === 0);
             document.getElementById('btn-avancar-pagina').disabled = (paginaAtual === paginasAlbum.length - 1);
         }
@@ -279,21 +308,58 @@
             renderizarPagina();
         }
 
-        function adicionarFamiliarPrompt() {
-            const nome = prompt("Nome do familiar:");
-            if (!nome) return;
-            const parentesco = prompt("Grau de parentesco (ex: Filho, Neta):") || "";
-            const descricao = prompt("Breve descrição / lembrança:") || "";
-            const foto = prompt("Nome do arquivo da foto (ex: img/foto4.jpg) ou deixe em branco:") || "img/padrao.jpg";
+        function abrirModal() {
+            document.getElementById('modal-adicionar').style.display = 'flex';
+        }
 
+        function fecharModal() {
+            document.getElementById('modal-adicionar').style.display = 'none';
+            document.getElementById('add-nome').value = '';
+            document.getElementById('add-parentesco').value = '';
+            document.getElementById('add-descricao').value = '';
+            document.getElementById('add-foto-file').value = '';
+            document.getElementById('nome-foto-selecionada').textContent = 'Nenhuma foto selecionada';
+        }
+
+        function atualizarTextoFoto(input) {
+            const span = document.getElementById('nome-foto-selecionada');
+            if (input.files && input.files[0]) {
+                span.textContent = "Foto: " + input.files[0].name;
+            } else {
+                span.textContent = "Nenhuma foto selecionada";
+            }
+        }
+
+        function salvarNovoFamiliar() {
+            const nome = document.getElementById('add-nome').value.trim();
+            const parentesco = document.getElementById('add-parentesco').value.trim();
+            const descricao = document.getElementById('add-descricao').value.trim();
+            const fileInput = document.getElementById('add-foto-file');
+            const arquivo = fileInput.files[0];
+
+            if (!nome) {
+                alert("Por favor, informe o nome do familiar.");
+                return;
+            }
+
+            if (arquivo) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    adicionarEGuardar(nome, parentesco, descricao, e.target.result);
+                };
+                reader.readAsDataURL(arquivo);
+            } else {
+                adicionarEGuardar(nome, parentesco, descricao, fotoPadrao);
+            }
+        }
+
+        function adicionarEGuardar(nome, parentesco, descricao, foto) {
             const novoFamiliar = { tipo: "familiar", nome, parentesco, descricao, foto };
-
-            // Insere antes da página de "fim"
             paginasAlbum.splice(paginasAlbum.length - 1, 0, novoFamiliar);
             localStorage.setItem('memoria_viva_familia', JSON.stringify(paginasAlbum));
-            
-            alert("Familiar adicionado com sucesso ao álbum!");
-            paginaAtual = paginasAlbum.length - 2; // Vai direto para a página dele
+
+            fecharModal();
+            paginaAtual = paginasAlbum.length - 2;
             renderizarPagina();
         }
 
@@ -304,14 +370,13 @@
                 return;
             }
 
-            if (confirm(`Deseja realmente remover ${item.nome} do álbum?`)) {
+            if (confirm(`Deseja remover ${item.nome}?`)) {
                 paginasAlbum.splice(paginaAtual, 1);
                 localStorage.setItem('memoria_viva_familia', JSON.stringify(paginasAlbum));
                 if (paginaAtual >= paginasAlbum.length) {
                     paginaAtual = paginasAlbum.length - 1;
                 }
                 renderizarPagina();
-                alert("Familiar removido.");
             }
         }
 
