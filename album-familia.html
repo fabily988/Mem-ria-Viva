@@ -1,3 +1,8 @@
+
+Fábily <fabily988@gmail.com>
+7:00 PM (0 minutes ago)
+to me
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -158,18 +163,10 @@
             font-size: 0.9rem;
         }
 
-        /* Correção específica para os textos dos campos dentro do Modal */
-        .campo-modal {
-            background-color: #ffffff !important;
-            color: #333333 !important;
-            border: 1px solid #cccccc !important;
-            padding: 10px !important;
-            border-radius: 8px !important;
-            font-size: 0.95rem !important;
-        }
-
-        .campo-modal::placeholder {
-            color: #777777 !important;
+        /* Garante visibilidade das dicas internas nos inputs */
+        #modal-adicionar input::placeholder,
+        #modal-adicionar textarea::placeholder {
+            color: #555555 !important;
             opacity: 1 !important;
         }
     </style>
@@ -212,19 +209,19 @@
 
     <!-- Modal Pop-up para Upload Local -->
     <div id="modal-adicionar" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 20px; border-radius: 12px; max-width: 320px; width: 90%; display: flex; flex-direction: column; gap: 10px;">
-            <h3 style="color: #4A9B9B; text-align: center; margin: 0;">Adicionar Familiar</h3>
+        <div style="background: #ffffff !important; padding: 20px; border-radius: 12px; max-width: 320px; width: 90%; display: flex; flex-direction: column; gap: 10px;">
+            <h3 style="color: #4A9B9B !important; text-align: center; margin: 0;">Adicionar Familiar</h3>
             
-            <input type="text" id="add-nome" class="campo-modal" placeholder="Nome do familiar">
-            <input type="text" id="add-parentesco" class="campo-modal" placeholder="Grau de parentesco (ex: Filha, Neto)">
-            <textarea id="add-descricao" class="campo-modal" placeholder="Breve lembrança..." style="height: 60px; font-family: inherit;"></textarea>
+            <input type="text" id="add-nome" placeholder="Nome do familiar" style="background: #ffffff !important; color: #000000 !important; border: 1px solid #777777 !important; padding: 10px !important; border-radius: 8px !important; font-size: 0.95rem !important;">
+            <input type="text" id="add-parentesco" placeholder="Grau de parentesco (ex: Filha, Neto)" style="background: #ffffff !important; color: #000000 !important; border: 1px solid #777777 !important; padding: 10px !important; border-radius: 8px !important; font-size: 0.95rem !important;">
+            <textarea id="add-descricao" placeholder="Breve lembrança..." style="background: #ffffff !important; color: #000000 !important; border: 1px solid #777777 !important; padding: 10px !important; border-radius: 8px !important; height: 60px !important; font-family: inherit !important; font-size: 0.95rem !important;"></textarea>
             
-            <label style="font-size: 0.85rem; font-weight: bold; color: #333;">Foto do familiar:</label>
-            <input type="file" id="add-foto-file" accept="image/*" style="background: transparent !important; color: #333 !important; padding: 0 !important;">
+            <label style="font-size: 0.85rem; font-weight: bold; color: #333333 !important;">Foto do familiar:</label>
+            <input type="file" id="add-foto-file" accept="image/*" style="background: transparent !important; color: #333333 !important; padding: 0 !important; border: none !important;">
 
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button onclick="salvarNovoFamiliar()" class="btn-acao" style="background: #2e7d32;">Salvar</button>
-                <button onclick="fecharModal()" class="btn-acao" style="background: #888;">Cancelar</button>
+                <button onclick="salvarNovoFamiliar()" class="btn-acao" style="background: #2e7d32 !important;">Salvar</button>
+                <button onclick="fecharModal()" class="btn-acao" style="background: #888888 !important;">Cancelar</button>
             </div>
         </div>
     </div>
